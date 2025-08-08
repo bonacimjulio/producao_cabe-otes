@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">🔩 Controle de Produção de Cabeçotes</h1>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-tab-pane" type="button" role="tab">📋 Registrar Produção</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab">📊 Dashboard & Histórico</button>
+  </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="register-tab-pane" role="tabpanel" tabindex="0">
+    <h2 class="mt-4">Registrar Novo Lote de Produção</h2>
+    {% if mensagem %}
+    <div class="alert alert-{{ tipo_mensagem }}" role="alert">
+        {{ mensagem }}
+    </div>
+    {% endif %}
+    <form action="{{ url_for('register_production') }}" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="modelo" class="form-label">Modelo de Cabeçote</label>
+            <select class="form-control" id="modelo" name="modelo" required>
+                <option value="">Selecione o modelo...</option>
+                {% for modelo in modelos %}
+                <option value="{{ modelo }}">{{ modelo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">✅ Registrar Lote de Produção</button>
+    </form>
+  </div>
+
+  <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" tabindex="0">
+    <h2 class="mt-4">Análise de Produção</h2>
+    <div class="row">
+        <div class="col-2"><a href="{{ url_for('home', period='hoje') }}" class="btn btn-secondary w-100">Hoje</a></div>
+        <div class="col-2"><a href="{{ url_for('home', period='7dias') }}" class="btn btn-secondary w-100">Últimos 7 dias</a></div>
+        <div class="col-2"><a href="{{ url_for('home', period='mes') }}" class="btn btn-secondary w-100">Este Mês</a></div>
+        <div class="col-2"><a href="{{ url_for('home', period='completo') }}" class="btn btn-secondary w-100">Histórico Completo</a></div>
+        </div>
+
+    <h3 class="mt-4">Exibindo período: {{ period_name }}</h3>
+
+    <div class="row">
+        <div class="col-3">
+            <div class="card text-center p-3">
+                <h5>Peças Montadas</h5>
+                <p class="display-6">{{ stats['total_montado'] | int }}</p>
+            </div>
+        </div>
+        </div>
+
+    <div class="row">
+        <div class="col-6">{{ plot_pie | safe }}</div>
+        <div class="col-6">{{ plot_bar | safe }}</div>
+    </div>
+
+    <h3 class="mt-4">Histórico Detalhado</h3>
+    <a href="{{ url_for('download_excel', start_date=start_date, end_date=end_date) }}" class="btn btn-success mb-3">📥 Exportar para Excel</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+            <tr>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -1,0 +1,5 @@
+Flask
+pandas
+plotly
+openpyxl
+# Adicione sua biblioteca de banco de dados aqui (ex: psycopg2-binary para PostgreSQL, pymysql para MySQL)
